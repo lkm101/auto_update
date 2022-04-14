@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"> -->
+    <link href="./styles.css" rel="stylesheet">
+    <title>Hello World!</title>
+    <!-- <link rel="stylesheet" href="./titlebar.css"></link> -->
+  </head>
+  <body>
+    <!-- <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>. -->
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+    <div id="main">
+      <h1>안녕!</h1>
+      <h2 id="version"></h2>
+
+      <div id="notification" class="hidden">
+        <p id="message"></p>
+        <button id="close-button" onclick="closeNotification()">
+          닫기
+        </button>
+        <button id="restart-button" onclick="restartApp()" class="hedden">
+          재시작
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const {ipcRenderer} = require('electron');
+      const version = document.getElementById('version');
+
+      ipcRenderer.send('app_version');
+      ipcRenderer.on('app_version', (event, arg)=>{
+        console.log("app_version receive", arg);
+        ipcRenderer.removeAllListeners('app_version');
+        version.innerText = "Version " + arg.version;
+      })
+
+      const notification = document.getElementById('notification');
+      const message = document.getElementById('message');
+      const restartButton = document.getElementById('restart-button');
+      ipcRenderer.on('update_available', ()=>{
+        ipcRenderer.removeAllListeners('update_available');
+        message.innerText = '업데이트 파일을 다운로드 중입니다...';
+        notification.classList.remove('hidden');
+      })
+      
+      ipcRenderer.on('update_downloaded', ()=>{
+        ipcRenerer.removeAllListeners('update_downloaded');
+        message.innerText = '업데이트 파일 다운로드가 완료되었습니다. 재시작을 하면 업데이트가 설치됩니다. 재시작 하시겠습니까?';
+        restartButton.classList.remove('hidden');
+        notification.classList.remove('hidden');
+      });
+
+      function closeNotification(){
+        console.log("closeNotification");
+        notification.classList.add('hidden');
+      }
+      function restartApp(){
+        ipcRenderer.send('restart_app');
+      }
+    </script>
+  </body>
+</html>
