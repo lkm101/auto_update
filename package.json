@@ -22,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^18.0.3",
+    "electron": "^24.0.0",
     "electron-builder": "~22.10.5"
   },
   "dependencies": {
