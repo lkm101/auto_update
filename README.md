@@ -13,23 +13,30 @@
 `autoUpdater` 객체는 다음과 같은 이벤트를 발생시킵니다:
 
 Event: `error`
+
 Returns: error Error
+
 업데이트에 문제가 생기면 발생하는 이벤트입니다.
 
 Event: `checking-for-update`
+
 업데이트를 확인하기 시작할 때 발생하는 이벤트입니다.
 
 Event: `update-available`
+
 사용 가능한 업데이트가 있을 때 발생하는 이벤트입니다. 이벤트는 자동으로 다운로드 됩니다.
 
 Event: `update-not-available`
+
 사용 가능한 업데이트가 없을 때 발생하는 이벤트입니다.
 
 Event: `update-downloaded`
+
 Returns:
   - event Event
   - releaseNotes String
   - releaseName String
   - releaseDate Date
   - updateURL String
+
 업데이트의 다운로드가 완료되었을 때 발생하는 이벤트입니다.
